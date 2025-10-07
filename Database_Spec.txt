@@ -1,0 +1,35 @@
+create database TaskifyDB
+
+create table tsk_users(
+	usr_id int primary key identity,
+	usr_username varchar(50) not null,
+	usr_email varchar(100) not null,
+	usr_password varchar(max) not null,
+	usr_created_at datetime default getdate()
+)
+
+create table tsk_tasks(
+	tks_id int primary key identity,
+	usr_id int,
+	tks_title varchar(100) not null,
+	tks_description varchar(max),
+	tks_deadline date,
+	tks_is_done int default 0,
+	tks_created_at datetime default getdate()
+
+	foreign key (usr_id) references tsk_users(usr_id)
+)
+
+create table tsk_time_logs(
+	tlg_id int primary key identity,
+	tks_id int,
+	tlg_start_time datetime not null,
+	tlg_end_time datetime not null,
+	duration as
+		case
+			when tlg_end_time is null then datediff(second, tlg_start_time, tlg_end_time)
+			else null
+		end persisted,
+
+	foreign key (tks_id) references tsk_tasks(tks_id)
+)
