@@ -10,7 +10,7 @@ def create_app():
     server = 'localhost'
     database = 'TaskifyDB'
     username = 'sa'
-    password = 'polman'
+    password = '123'
 
     app.config['SQLALCHEMY_DATABASE_URI'] = (
         f'mssql+pyodbc://{username}:{password}@{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
