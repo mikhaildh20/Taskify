@@ -1,9 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+import os
 
 db = SQLAlchemy()
 
 def create_app():
+    load_dotenv()
     app = Flask(__name__)
 
     # Setup credentials
@@ -16,6 +19,9 @@ def create_app():
         f'mssql+pyodbc://{username}:{password}@{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
     )
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
+    # ambil secret key dari env
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
     db.init_app(app)
 

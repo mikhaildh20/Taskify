@@ -12,19 +12,17 @@ class Users(db.Model):
     password_hash = db.Column('usr_password', db.String(255), nullable = False)
     created_at = db.Column('usr_created_at', db.DateTime, default = datetime.utcnow)
     
-    # method hash password
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-    
-    # method validate password
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+    # relation to task model
+    tasks = db.relationship('Tasks', back_populates='user', cascade='all, delete-orphan')
 
-    def to_dict(self):
-        return {
+    def to_dict(self, include_tasks=False):
+        data = {
             "id": self.id,
             "username": self.username,
             "email": self.email,
             "created_at": self.created_at
         }
+        if include_tasks : 
+            data["tasks"] = [task.to_dict() for task in self.tasks]
+        return data
 

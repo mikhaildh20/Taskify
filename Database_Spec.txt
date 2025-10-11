@@ -25,7 +25,7 @@ create table tsk_time_logs(
 	tks_id int,
 	tlg_start_time datetime not null,
 	tlg_end_time datetime not null,
-	duration as
+	tlg_duration as
 		case
 			when tlg_end_time is null then datediff(second, tlg_start_time, tlg_end_time)
 			else null
