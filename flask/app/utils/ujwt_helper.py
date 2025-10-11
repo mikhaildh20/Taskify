@@ -23,3 +23,16 @@ def decode_token(token):
         return {"error": "Invalid token"}
     except Exception as e:
         return {"error": str(e)}
+
+def verify_token(token):
+    """Validate token and return user data"""
+    if not token:
+        return None
+    
+    if token.startswith("Bearer "):
+        token = token.split(" ")[1]
+
+    data = decode_token(token)
+    if "error" in data:
+        return None
+    return data
